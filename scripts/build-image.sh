@@ -15,8 +15,7 @@ DAEDE_RELEASE_TAG="${DAEDE_RELEASE_TAG:-latest}"
 DAEDE_ARCH="${DAEDE_ARCH:-x86_64}"
 DAEDE_APK_URL="${DAEDE_APK_URL:-}"
 
-EXTRA_PACKAGES="${EXTRA_PACKAGES:-luci luci-i18n-base-zh-cn luci-i18n-package-manager-zh-cn luci-app-daede kmod-sched-core kmod-sched-bpf kmod-veth kmod-xdp-sockets-diag curl nano}"
-export USER_PACKAGES="$EXTRA_PACKAGES"
+EXTRA_PACKAGES="${EXTRA_PACKAGES:-luci luci-i18n-base-zh-cn luci-i18n-package-manager-zh-cn luci-app-daede kmod-sched-core kmod-sched-bpf kmod-veth kmod-xdp-sockets-diag kmod-nft-tproxy kmod-tun}"
 
 WORK_DIR="${WORK_DIR:-$PWD/work}"
 IB_ARCHIVE="$WORK_DIR/imagebuilder.tar.zst"
@@ -157,7 +156,7 @@ EOF
 
 if [ "$PREFLIGHT" = "1" ] || [ "$PREFLIGHT" = "true" ]; then
   echo "Running package manifest preflight..."
-    if ! make manifest PROFILE="$PROFILE"; then
+  if ! make manifest PROFILE="$PROFILE" PACKAGES="$EXTRA_PACKAGES"; then
     diagnose_failure
     exit 1
   fi
@@ -175,6 +174,7 @@ sed -i \
 
 if ! make image \
     PROFILE="$PROFILE" \
+    PACKAGES="$EXTRA_PACKAGES" \
     FILES=files \
     BIN_DIR="$OUT_DIR" \
     EXTRA_IMAGE_NAME="$EXTRA_IMAGE_NAME" \
