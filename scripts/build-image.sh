@@ -213,7 +213,7 @@ nano
 "
 
 EXTRA_PACKAGES="${EXTRA_PACKAGES:-$DEFAULT_EXTRA_PACKAGES}"
-
+EXTRA_PACKAGES="$(printf '%s\n' "$EXTRA_PACKAGES" | tr '\n' ' ' | xargs)"
 
 mkdir -p "$WORK_DIR" "$OUT_DIR"
 
