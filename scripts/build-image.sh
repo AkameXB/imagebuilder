@@ -41,26 +41,7 @@ mkdir -p "$WORK_DIR" "$OUT_DIR"
 resolve_daede_apk_url() {
   local package="$1"
 
-  # 对 luci-app-daede 保留原有 DAEDE_APK_URL 覆盖逻辑
-  if [ "$package" = "luci-app-daede" ] && [ -n "$DAEDE_APK_URL" ]; then
-    printf '%s\n' "$DAEDE_APK_URL"
-    return
-  fi
-
-  # dae 单独 URL
-  if [ "$package" = "dae" ] && [ -n "$DAE_APK_URL" ]; then
-    printf '%s\n' "$DAE_APK_URL"
-    return
-  fi
-
-  # daed 单独 URL
-  if [ "$package" = "daed" ] && [ -n "$DAED_APK_URL" ]; then
-    printf '%s\n' "$DAED_APK_URL"
-    return
-  fi
-
   local release_api
-
   if [ "$DAEDE_RELEASE_TAG" = "latest" ]; then
     release_api="https://api.github.com/repos/$DAEDE_REPO/releases/latest"
   else
@@ -108,7 +89,6 @@ if not matches:
 print(matches[0])
 PY
 }
-
 
 ###############################################################################
 # Download dae / daed / luci-app-daede Release APKs
